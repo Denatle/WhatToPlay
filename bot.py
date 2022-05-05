@@ -1,8 +1,8 @@
 import discord
-from modules import scraper
+from modules import parser
 
-bot = discord.Bot(debug_guilds=[910065668563533894])
-games_scraper = scraper.Scraper()
+bot = discord.Bot(sync_commands=True, intents=discord.Intents.all())
+games_parser = parser.Parser(config_channel_name="games-config")
 
 @bot.event
 async def on_ready():
@@ -10,7 +10,8 @@ async def on_ready():
 
 
 @bot.slash_command()
-async def hello(ctx):
-    await ctx.respond("Hello!")
+async def games(ctx):
+    games = await games_parser.Games(ctx.guild)
+    await ctx.respond(games)
 
 bot.run("OTcxNzI3NTQ5NDEzNTkzMTI4.GW1RQu.VBrZctP9RicDuXbQvhI6oOrWfRhoQ3hYOuCN9Y")
