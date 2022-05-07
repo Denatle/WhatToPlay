@@ -1,10 +1,12 @@
 import discord
 from modules.randomizer import Randomizer
 from modules.parser import Parser
+from modules.visualizer import Visualizer
 
 bot = discord.Bot(sync_commands=True, intents=discord.Intents.all())
 games_parser = Parser(config_channel_name="games-config")
 games_randomizer = Randomizer()
+visuals = Visualizer("visuals/visuals.json")
 
 
 @bot.event
