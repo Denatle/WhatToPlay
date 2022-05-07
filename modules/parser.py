@@ -17,7 +17,7 @@ class Parser:
         
         return (messages[0], games)
     
-    async def Games(self, guild):
+    async def Games(self, guild, *, asList: bool = False):
         messages = await self._getGamesMessage(guild)
         games = await self._parseGamesFromMessage(messages)
-        return games[0] + " " + ", ".join(games[1])
+        return games[1] if asList else games[0] + " " + ", ".join(games[1]) 
