@@ -1,9 +1,10 @@
 import discord
-from modules import parser, randomizer
+from modules.randomizer import Randomizer
+from modules.parser import Parser
 
 bot = discord.Bot(sync_commands=True, intents=discord.Intents.all())
-games_parser = parser.Parser(config_channel_name="games-config")
-games_randomizer = randomizer.Randomizer()
+games_parser = Parser(config_channel_name="games-config")
+games_randomizer = Randomizer()
 
 
 @bot.event
@@ -25,5 +26,6 @@ async def gamesToPlay(ctx):
 async def randomGameToPlay(ctx):
     games = await games_parser.Games(ctx.guild, asList=True)
     await ctx.respond(await games_randomizer.randomGame(games))
+
 
 bot.run("OTcxNzI3NTQ5NDEzNTkzMTI4.GW1RQu.VBrZctP9RicDuXbQvhI6oOrWfRhoQ3hYOuCN9Y")
