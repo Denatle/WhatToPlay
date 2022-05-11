@@ -1,4 +1,6 @@
 import discord
+from discord.ext.commands import has_permissions
+
 from modules.randomizer import Randomizer
 from modules.parser import Parser
 from modules.role_manager import RoleManager
@@ -29,7 +31,7 @@ async def randomGameToPlay(ctx: discord.commands.context.ApplicationContext):
     games = await games_parser.Games(ctx.guild, asList=True)
     await ctx.respond(await games_randomizer.randomGame(games), ephemeral=True)
 
-
+@has_permissions(manage_roles=True)
 @bot.slash_command(name='create_roles',
                    description="Creates a role for each game from config-channel",
                    guild_ids=[910065668563533894])

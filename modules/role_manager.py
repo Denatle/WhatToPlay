@@ -8,6 +8,9 @@ class RoleManager:
 
     async def createRolesByGames(self, games: list, guild: discord.Guild):
         for _, game in enumerate(games):
+            role = discord.utils.get(guild.roles, name=game)
+            if role:
+                await role.delete()
             await guild.create_role(name=game, color=discord.Color.from_rgb(
                 self.random_color(),
                 self.random_color(),
