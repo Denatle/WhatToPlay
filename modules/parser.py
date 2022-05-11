@@ -1,23 +1,22 @@
-import discord.utils
+import discord
 
 
 class Parser:
     def __init__(self, config_channel_name: "str"):
         self.channel_name = config_channel_name
 
-    async def _getGamesMessage(self, guild):
+    async def _getConfigs(self, guild: discord.Guild):
         channel = discord.utils.get(guild.channels, name=self.channel_name)
         messages = await channel.history(limit=float("inf")).flatten()
-        return (messages[-1].content, messages[-2].content)
+        return messages[::-1]
 
-    async def _parseGamesFromMessage(self, messages: tuple):
-        games = messages[1].split(",")
+    async def _parseGamesFromConfig(self, messages: list):
+        games = messages[1].content.split(",")
         for i, game in enumerate(games):
             games[i] = game.strip()
+        return games
 
-        return (messages[0], games)
-
-    async def Games(self, guild, *, asList: bool = False):
-        messages = await self._getGamesMessage(guild)
-        games = await self._parseGamesFromMessage(messages)
-        return games[1] if asList else games[0] + " " + ", ".join(games[1])
+    async def Games(self, guild: discord.Guild, *, asList: bool = False):
+        messages = await self._getConfigs(guild)
+        games = await self._parseGamesFromConfig(messages)
+        return games if asList else messages[0].content + " " + ", ".join(games)
