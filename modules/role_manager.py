@@ -1,4 +1,5 @@
 import discord
+from discord.commands import OptionChoice
 import random
 
 

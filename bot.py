@@ -20,7 +20,7 @@ async def on_ready():
                    description="Gets server's games to play with friends",
                    guild_ids=[910065668563533894])
 async def gamesToPlay(ctx: discord.commands.context.ApplicationContext):
-    games = await games_parser.Games(ctx.guild)
+    games = await games_parser.Games(ctx.guild, asList=False)
     await ctx.respond(games, ephemeral=True)
 
 
@@ -28,7 +28,7 @@ async def gamesToPlay(ctx: discord.commands.context.ApplicationContext):
                    description="Gets random game to play from server's",
                    guild_ids=[910065668563533894])
 async def randomGameToPlay(ctx: discord.commands.context.ApplicationContext):
-    games = await games_parser.Games(ctx.guild, asList=True)
+    games = await games_parser.Games(ctx.guild)
     game = await games_randomizer.randomGame(games)
     await ctx.respond(game, ephemeral=True)
 
@@ -38,7 +38,7 @@ async def randomGameToPlay(ctx: discord.commands.context.ApplicationContext):
                    description="Creates a role for each game from config-channel",
                    guild_ids=[910065668563533894])
 async def createRolesByGames(ctx: discord.commands.context.ApplicationContext):
-    games = await games_parser.Games(ctx.guild, asList=True)
+    games = await games_parser.Games(ctx.guild)
     await role_manager.createRolesByGames(games, ctx.guild)
     await ctx.respond("Roles created!", ephemeral=True)
 
@@ -49,13 +49,16 @@ async def createRolesByGames(ctx: discord.commands.context.ApplicationContext):
                    guild_ids=[910065668563533894])
 async def poll(ctx: discord.commands.context.ApplicationContext,
                game_role: discord.Option(discord.Role, "Game role")):
-    games = await games_parser.Games(ctx.guild, asList=True)
+    games = await games_parser.Games(ctx.guild)
     if game_role.name in games:
+        await ctx.respond("✅", ephemeral=True)
+        description = await games_parser.Poll(guild=ctx.guild)
         embed = discord.Embed(
             title='!POLL!',
-            description=f'Do you want to play {game_role.mention}?',
+            description=description.format(game_role.mention),
             color=0xffffff)
-        await ctx.send(game_role.mention, embed=embed)
+        message = await ctx.send(game_role.mention, embed=embed)
+        await message.add_reaction("🟢"), await message.add_reaction("🔴")
     else:
         await ctx.respond("Not a game role", ephemeral=True)
 

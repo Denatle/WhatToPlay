@@ -1,6 +1,5 @@
 import discord
 
-
 class Parser:
     def __init__(self, config_channel_name: "str"):
         self.channel_name = config_channel_name
@@ -16,7 +15,12 @@ class Parser:
             games[i] = game.strip()
         return games
 
-    async def Games(self, guild: discord.Guild, *, asList: bool = False):
+    async def Games(self, guild: discord.Guild, *, asList: bool = True):
         messages = await self._getConfigs(guild)
         games = await self._parseGamesFromConfig(messages)
         return games if asList else messages[0].content + " " + ", ".join(games)
+
+    async def Poll(self, guild: discord.Guild):
+        messages = await self._getConfigs(guild)
+        return messages[2].content
+        
