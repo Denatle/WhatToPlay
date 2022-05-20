@@ -41,6 +41,13 @@ async def createRolesByGames(ctx: discord.commands.context.ApplicationContext):
     await role_manager.createRolesByGames(games, ctx.guild)
     await ctx.respond("✅", ephemeral=True)
 
+@has_permissions(manage_roles=True)
+@bot.slash_command(name='clear_roles',
+                   description="Clears game roles")
+async def clearRolesByGames(ctx: discord.commands.context.ApplicationContext):
+    games = await games_parser.Games(ctx.guild)
+    await role_manager.createRolesByGames(games, ctx.guild)
+    await ctx.respond("✅", ephemeral=True)
 
 @bot.slash_command(name='give_role',
                    description="Gives you a game role")
@@ -55,7 +62,7 @@ async def giveGameRole(ctx: discord.commands.context.ApplicationContext,
         
 @bot.slash_command(name='remove_role',
                    description="Removes you a game role")
-async def giveGameRole(ctx: discord.commands.context.ApplicationContext,
+async def removeGameRole(ctx: discord.commands.context.ApplicationContext,
                        game_role: discord.Option(discord.Role, "Game role")):
     games = await games_parser.Games(ctx.guild)
     if game_role.name in games:

@@ -16,3 +16,16 @@ class RoleManager:
                 self.random_color(),
                 self.random_color(),
                 self.random_color()))
+            
+    async def getGameRoles(self, games: list, guild: discord.Guild):
+        roles = []
+        for _, game in enumerate(games):
+            role = discord.utils.get(guild.roles, name=game)
+            if role:
+                roles += role
+    
+    async def clearGameRoles(self, games: list, guild: discord.Guild):
+        for _, game in enumerate(games):
+            role = discord.utils.get(guild.roles, name=game)
+            if role:
+                await role.delete()
