@@ -11,7 +11,7 @@ class RoleManager:
         for _, game in enumerate(games):
             role = discord.utils.get(guild.roles, name=game)
             if role:
-                await role.delete()
+                continue
             await guild.create_role(name=game, color=discord.Color.from_rgb(
                 self.random_color(),
                 self.random_color(),
