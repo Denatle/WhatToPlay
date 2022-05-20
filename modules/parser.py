@@ -10,6 +10,8 @@ class Parser:
         return messages[::-1]
 
     async def _parseGamesFromConfig(self, messages: list):
+        if not games:
+            return None
         games = messages[1].content.split(",")
         for i, game in enumerate(games):
             games[i] = game.strip()

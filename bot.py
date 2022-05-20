@@ -5,7 +5,9 @@ from modules.randomizer import Randomizer
 from modules.parser import Parser
 from modules.role_manager import RoleManager
 
-bot = discord.Bot(sync_commands=True, intents=discord.Intents.all())
+from config import *
+
+bot = discord.Bot(auto_sync_commands=True, intents=discord.Intents.all())
 games_parser = Parser(config_channel_name="games-config")
 games_randomizer = Randomizer()
 role_manager = RoleManager()
@@ -62,9 +64,15 @@ async def poll(ctx: discord.commands.context.ApplicationContext,
     else:
         await ctx.respond("Not a game role", ephemeral=True)
 
+@bot.slash_command(name='help',
+                   description="Help with deployment",
+                   guild_ids=[910065668563533894])
+async def help(ctx: discord.commands.ApplicationContext):
+    await ctx.respond(HELP, ephemeral=True)
+
 
 @bot.event
 async def on_application_command_error(ctx, error):
     await ctx.respond(error, ephemeral=True)
 
-bot.run("OTcxNzI3NTQ5NDEzNTkzMTI4.GW1RQu.VBrZctP9RicDuXbQvhI6oOrWfRhoQ3hYOuCN9Y")
+bot.run(TOKEN)
