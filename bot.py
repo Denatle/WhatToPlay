@@ -39,7 +39,31 @@ async def randomGameToPlay(ctx: discord.commands.context.ApplicationContext):
 async def createRolesByGames(ctx: discord.commands.context.ApplicationContext):
     games = await games_parser.Games(ctx.guild)
     await role_manager.createRolesByGames(games, ctx.guild)
-    await ctx.respond("Roles created!", ephemeral=True)
+    await ctx.respond("✅", ephemeral=True)
+
+
+@bot.slash_command(name='give_role',
+                   description="Gives you a game role")
+async def giveGameRole(ctx: discord.commands.context.ApplicationContext,
+                       game_role: discord.Option(discord.Role, "Game role")):
+    games = await games_parser.Games(ctx.guild)
+    if game_role.name in games:
+        await ctx.author.add_roles(game_role)
+        await ctx.respond("✅", ephemeral=True)
+    else:
+        await ctx.respond("Not a game role", ephemeral=True)
+        
+@bot.slash_command(name='remove_role',
+                   description="Removes you a game role")
+async def giveGameRole(ctx: discord.commands.context.ApplicationContext,
+                       game_role: discord.Option(discord.Role, "Game role")):
+    games = await games_parser.Games(ctx.guild)
+    if game_role.name in games:
+        await ctx.author.remove_roles(game_role)
+        await ctx.respond("✅", ephemeral=True)
+    else:
+        await ctx.respond("Not a game role", ephemeral=True)
+        
 
 
 @cooldown(2, 30, BucketType.user)
@@ -59,6 +83,7 @@ async def poll(ctx: discord.commands.context.ApplicationContext,
         await message.add_reaction("🟢"), await message.add_reaction("🔴")
     else:
         await ctx.respond("Not a game role", ephemeral=True)
+
 
 @bot.slash_command(name='help',
                    description="Help with deployment")
