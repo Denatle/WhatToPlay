@@ -80,13 +80,13 @@ async def poll(ctx: discord.commands.context.ApplicationContext,
                game_role: discord.Option(discord.Role, "Game role")):
     games = await games_parser.Games(ctx.guild)
     if game_role.name in games:
-        await ctx.respond("✅", ephemeral=True)
         description = await games_parser.Poll(guild=ctx.guild)
         embed = discord.Embed(
             title='!POLL!',
             description=description.format(game_role.mention),
             color=0xffffff)
         message = await ctx.send(game_role.mention, embed=embed)
+        await ctx.respond("✅", ephemeral=True)
         await message.add_reaction("🟢"), await message.add_reaction("🔴")
     else:
         await ctx.respond("Not a game role", ephemeral=True)
