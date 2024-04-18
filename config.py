@@ -1,4 +1,4 @@
-TOKEN = "OTcxNzI3NTQ5NDEzNTkzMTI4.GW1RQu.VBrZctP9RicDuXbQvhI6oOrWfRhoQ3hYOuCN9Y"
+TOKEN = "discord-token"
 
 HELP = """
 Create channel with name `games-config`
